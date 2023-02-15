@@ -44,6 +44,12 @@ app.all("*", (req, res) => {
 });
 
 app.listen(process.env.PORT, () => {
+  res
+    .status(200)
+    .json({
+      message:
+        "✅ 🚀Server started, let's go to do perfect marvel react website🚀 ✅",
+    });
   console.log(
     "✅ 🚀Server started, let's go to do perfect marvel react website🚀 ✅"
   );
