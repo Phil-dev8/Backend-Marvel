@@ -29,6 +29,12 @@ app.get("/characters", async (req, res) => {
   }
 });
 
+app.get("/", (req, res) => {
+  res.json(
+    "✅ 🚀Server started, let's go to do perfect marvel react website🚀 ✅"
+  );
+});
+
 app.get("/comics/:characterId", async (req, res) => {
   try {
     const response = await axios.get(
@@ -39,17 +45,12 @@ app.get("/comics/:characterId", async (req, res) => {
     console.log(error.response);
   }
 });
+
 app.all("*", (req, res) => {
   res.status(404).json({ message: "This route doesn't exist" });
 });
 
 app.listen(process.env.PORT, () => {
-  res
-    .status(200)
-    .json({
-      message:
-        "✅ 🚀Server started, let's go to do perfect marvel react website🚀 ✅",
-    });
   console.log(
     "✅ 🚀Server started, let's go to do perfect marvel react website🚀 ✅"
   );
