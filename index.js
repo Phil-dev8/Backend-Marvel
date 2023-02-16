@@ -5,6 +5,12 @@ const cors = require("cors");
 app.use(cors());
 const axios = require("axios");
 
+app.get("/", (req, res) => {
+  res.json(
+    "✅ 🚀Server started, let's go to do perfect marvel react website🚀 ✅"
+  );
+});
+
 app.get("/comics", async (req, res) => {
   try {
     const title = req.query.title || ";";
@@ -36,16 +42,13 @@ app.get("/characters", async (req, res) => {
   }
 });
 
-app.get("/", (req, res) => {
-  res.json(
-    "✅ 🚀Server started, let's go to do perfect marvel react website🚀 ✅"
-  );
-});
-
 app.get("/comics/:characterId", async (req, res) => {
   try {
+    const characterId = req.params.characterId;
+    console.log(req.params);
+
     const response = await axios.get(
-      `https://lereacteur-marvel-api.herokuapp.com/comics/:characterId?apiKey=${process.env.API_KEY}`
+      `https://lereacteur-marvel-api.herokuapp.com/comics/${characterId}?apiKey=${process.env.API_KEY}`
     );
     res.status(200).json(response.data);
   } catch (error) {
