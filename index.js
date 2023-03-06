@@ -23,6 +23,7 @@ app.get("/comics", async (req, res) => {
     res.json(response.data);
   } catch (error) {
     console.log(error.response);
+    res.status(400).json({ message: error.message });
   }
 });
 
@@ -39,6 +40,7 @@ app.get("/characters", async (req, res) => {
     res.status(200).json(response.data);
   } catch (error) {
     console.log(error.response);
+    res.status(400).json({ message: error.message });
   }
 });
 
@@ -53,6 +55,7 @@ app.get("/comics/:characterId", async (req, res) => {
     res.status(200).json(response.data);
   } catch (error) {
     console.log(error.response);
+    res.status(400).json({ message: error.message });
   }
 });
 
@@ -60,7 +63,7 @@ app.get("/character/:characterId", async (req, res) => {
   try {
     const characterId = req.params.characterId;
     const response = await axios.get(
-      `https://lereacteur-marvel-api.herokuapp.com/character/${characterId}?apiKey=${process.env.APIK_KEY}`
+      `https://lereacteur-marvel-api.herokuapp.com/character/${characterId}?apiKey=${process.env.API_KEY}`
     );
     res.status(200).json(response.data);
   } catch (error) {
@@ -73,7 +76,7 @@ app.all("*", (req, res) => {
   res.status(404).json({ message: "This route doesn't exist" });
 });
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log(
     "✅ 🚀Server started, let's go to do perfect marvel react website🚀 ✅"
   );
