@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
 
 app.get("/comics", async (req, res) => {
   try {
-    const title = req.query.title || ";";
+    const title = req.query.title || "";
     const skip = req.query.skip || "0";
     const limit = req.query.limit || "100";
     const response = await axios.get(
