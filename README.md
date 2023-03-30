@@ -1,6 +1,6 @@
 # Backend-Marvel
 
-This is my back-end for my website Marvel ----> **https://marvel-phil-dev8.netlify.app/**
+This is the back-end of my Marvel website ----> **https://marvel-phil-dev8.netlify.app/**
 
 ## The differents routes
 
@@ -8,7 +8,7 @@ I use a Marvel API with **5 differents route** for this project : 3 for comics, 
 
 Route : /comics  
 Method : **GET**  
-What it does? : \_Get the list of comics ( **+ 1500 !**)
+What it does? : _Get the list of comics ( **+ 1500 !**)_
 
 Route : /comic/:comicId  
 Method : **GET**  
