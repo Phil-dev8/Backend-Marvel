@@ -8,7 +8,6 @@ router.use(express.json());
 
 router.post("/user/signup", async (req, res) => {
   try {
-    console.log(req.body);
     const user = await User.findOne({ username: req.body.username });
 
     if (user) {
@@ -34,6 +33,25 @@ router.post("/user/signup", async (req, res) => {
     }
   } catch (error) {
     res.status(400).json({ error: error.message });
+  }
+});
+
+router.post("/user/login", async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.body.username });
+    if (user) {
+      if (
+        SHA256(req.body.password + user.salt).toString(encBase64) === user.hash
+      ) {
+        res.status(200).json({ _id: user._id, token: user.token });
+      } else {
+        res.status(401).json("Wrong password");
+      }
+    } else {
+      res.status(400).json(`User doesn't exist`);
+    }
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 });
 
