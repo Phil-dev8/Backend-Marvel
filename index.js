@@ -10,7 +10,7 @@ app.use(cors());
 app.use(charactersRoute);
 app.use(comicsRoute);
 app.use(userRoute);
-mongoose.connect("mongodb://localhost/marvel-test");
+mongoose.connect(process.env.MONGODB_URI);
 
 app.get("/", (req, res) => {
   res.json(
