@@ -11,7 +11,7 @@ app.use(charactersRoute);
 app.use(comicsRoute);
 app.use(userRoute);
 
-mongoose.connect("mongodb://127.0.0.1:27017/marvel-test");
+mongoose.connect(process.env.MONGODB_URI);
 
 app.get("/", (req, res) => {
   res.json(
