@@ -5,11 +5,13 @@ const app = express();
 const charactersRoute = require("./routes/characters");
 const comicsRoute = require("./routes/comics");
 const userRoute = require("./routes/user");
+const favoritesRoute = require("./routes/favorites");
 const mongoose = require("mongoose");
 app.use(cors());
 app.use(charactersRoute);
 app.use(comicsRoute);
 app.use(userRoute);
+app.use(favoritesRoute);
 
 mongoose.connect(process.env.MONGODB_URI);
 

@@ -43,12 +43,14 @@ router.post("/user/login", async (req, res) => {
       if (
         SHA256(req.body.password + user.salt).toString(encBase64) === user.hash
       ) {
-        res.status(200).json({ _id: user._id, token: user.token });
+        res
+          .status(200)
+          .json({ _id: user._id, token: user.token, username: user.username });
       } else {
-        res.status(401).json("Wrong password");
+        res.status(401).json({ message: "Wrong password" });
       }
     } else {
-      res.status(400).json(`User doesn't exist`);
+      res.status(400).json({ message: `User doesn't exist` });
     }
   } catch (error) {
     res.status(400).json({ message: error.message });
