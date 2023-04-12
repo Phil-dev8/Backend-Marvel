@@ -20,4 +20,19 @@ router.put("/favoritescomics", async (req, res) => {
   }
 });
 
+router.put("/favoritescharacters", async (req, res) => {
+  try {
+    const user = await User.findById(req.query._id);
+    if (user.characterFavorites.indexOf(req.body._id) === -1) {
+      user.characterFavorites.push(req.body._id);
+      await user.save();
+      res.status(200).json(user.characterFavorites);
+    } else {
+      res.status(400).json("Favoris déhà existant");
+    }
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 module.exports = router;
