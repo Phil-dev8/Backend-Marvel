@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
+router.use(express.json());
 
 router.put("/favoritescomics", async (req, res) => {
   try {
@@ -13,7 +14,7 @@ router.put("/favoritescomics", async (req, res) => {
       console.log(user.comicFavorites);
     } else {
       res.status(400).json("Favoris déja existant");
-      console.log(user.comicFavorites);
+      // console.log(user.comicFavorites);
     }
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -28,7 +29,7 @@ router.put("/favoritescharacters", async (req, res) => {
       await user.save();
       res.status(200).json(user.characterFavorites);
     } else {
-      res.status(400).json("Favoris déhà existant");
+      res.status(400).json("Favoris déjà existant");
     }
   } catch (error) {
     res.status(400).json({ message: error.message });
