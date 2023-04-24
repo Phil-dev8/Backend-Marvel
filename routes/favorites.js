@@ -1,38 +1,51 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
+
 router.use(express.json());
 
-router.put("/favoritescomics", async (req, res) => {
+router.put("/favorites/comics/:comicId", async (req, res) => {
   try {
-    const user = await User.findById(req.query._id);
-    // console.log(user);
-    if (user.comicFavorites.indexOf(req.body._id) === -1) {
-      user.comicFavorites.push(req.body._id);
-      await user.save();
-      res.status(200).json(user.comicFavorites);
-      console.log(user.comicFavorites);
-    } else {
-      res.status(400).json("Favoris déja existant");
-      // console.log(user.comicFavorites);
+    const comicId = req.params.comicId;
+    const user = await User.findById(req.user.id);
+    const userComicFavorites = user.comicFavorites;
+
+    if (userComicFavorites.includes(comicId)) {
+      return res
+        .status(409)
+        .json({ message: `Le comic ${comicId} est déjà dans les favoris` });
     }
+
+    userComicFavorites.push(comicId);
+
+    await user.save();
+    res.status(200).json(userComicFavorites);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 });
 
-router.put("/favoritescharacters", async (req, res) => {
+router.put("/favorites/characters/:characterId", async (req, res) => {
   try {
-    const user = await User.findById(req.query._id);
-    if (user.characterFavorites.indexOf(req.body._id) === -1) {
-      user.characterFavorites.push(req.body._id);
-      await user.save();
-      res.status(200).json(user.characterFavorites);
-    } else {
-      res.status(400).json("Favoris déjà existant");
+    const characterId = req.params.characterId;
+    const user = await User.findById(req.user.id);
+    const userCharacterFavorites = user.characterFavorites;
+
+    if (userCharacterFavorites.includes(characterId)) {
+      return res
+        .status(409)
+        .json({
+          message: `Le personnage ${characterId} est déjà dans les favoris`,
+        });
     }
+
+    userCharacterFavorites.push(characterId);
+
+    await user.save();
+
+    res.status(200).json(userCharacterFavorites);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 });
 
