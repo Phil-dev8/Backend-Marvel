@@ -4,6 +4,15 @@ const User = require("../models/User");
 
 router.use(express.json());
 
+router.get("/favorites/comics", async (req, res) => {
+  try {
+    const comics = await User.findById(req.user.id).select("comicFavorites");
+    res.status(200).json(comics);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 router.put("/favorites/comics/:comicId", async (req, res) => {
   try {
     const comicId = req.params.comicId;
@@ -22,6 +31,17 @@ router.put("/favorites/comics/:comicId", async (req, res) => {
     res.status(200).json(userComicFavorites);
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+});
+
+router.get("/favorites/characters", async (req, res) => {
+  try {
+    const characters = await User.findById(req.user.id).select(
+      "characterFavorites"
+    );
+    res.status(200).json(characters);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
