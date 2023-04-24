@@ -4,19 +4,21 @@ const User = require("../models/User");
 
 router.use(express.json());
 
-router.get("/favorites/comics", async (req, res) => {
+router.get("/users/:userId/favorites/comics", async (req, res) => {
   try {
-    const comics = await User.findById(req.user.id).select("comicFavorites");
+    const userId = req.params.userId;
+    const comics = await User.findById(userId).select("comicFavorites");
     res.status(200).json(comics);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-router.put("/favorites/comics/:comicId", async (req, res) => {
+router.put("/users/:userId/favorites/comics/:comicId", async (req, res) => {
   try {
     const comicId = req.params.comicId;
-    const user = await User.findById(req.user.id);
+    const userId = req.params.userId;
+    const user = await User.findById(userId);
     const userComicFavorites = user.comicFavorites;
 
     if (userComicFavorites.includes(comicId)) {
@@ -34,39 +36,42 @@ router.put("/favorites/comics/:comicId", async (req, res) => {
   }
 });
 
-router.get("/favorites/characters", async (req, res) => {
+router.get("/users/:userId/favorites/characters", async (req, res) => {
   try {
-    const characters = await User.findById(req.user.id).select(
-      "characterFavorites"
-    );
+    const userId = req.params.userId;
+    const characters = await User.findById(userId).select("characterFavorites");
     res.status(200).json(characters);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-router.put("/favorites/characters/:characterId", async (req, res) => {
-  try {
-    const characterId = req.params.characterId;
-    const user = await User.findById(req.user.id);
-    const userCharacterFavorites = user.characterFavorites;
+router.put(
+  "/users/:userId/favorites/characters/:characterId",
+  async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const characterId = req.params.characterId;
+      const user = await User.findById(userId);
+      const userCharacterFavorites = user.characterFavorites;
 
-    if (userCharacterFavorites.includes(characterId)) {
-      return res
-        .status(409)
-        .json({
-          message: `Le personnage ${characterId} est déjà dans les favoris`,
-        });
+      if (userCharacterFavorites.includes(characterId)) {
+        return res
+          .status(409)
+          .json({
+            message: `Le personnage ${characterId} est déjà dans les favoris`,
+          });
+      }
+
+      userCharacterFavorites.push(characterId);
+
+      await user.save();
+
+      res.status(200).json(userCharacterFavorites);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
     }
-
-    userCharacterFavorites.push(characterId);
-
-    await user.save();
-
-    res.status(200).json(userCharacterFavorites);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
   }
-});
+);
 
 module.exports = router;
