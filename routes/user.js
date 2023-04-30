@@ -27,7 +27,9 @@ router.post("/user/signup", async (req, res) => {
         });
 
         await newUser.save();
-        res.status(200).json({ message: "account created" });
+        res
+          .status(200)
+          .json({ _id: user._id, token: user.token, username: user.username });
       } else {
         res.status(400).json({ message: "missing parameters" });
       }
