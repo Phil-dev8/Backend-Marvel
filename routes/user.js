@@ -27,7 +27,13 @@ router.post("/user/signup", async (req, res) => {
         });
 
         await newUser.save();
-        res.status(200).json({ token: user.token, username: user.username });
+        res
+          .status(200)
+          .json({
+            token: newUser.token,
+            username: newUser.username,
+            _id: newUser._id,
+          });
       } else {
         res.status(400).json({ message: "missing parameters" });
       }
